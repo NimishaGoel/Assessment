@@ -10,14 +10,16 @@ import org.json.simple.parser.ParseException;
 
 
 public class OrderScheduling {
-	static HashMap<String,String> orderList = null;
-	private static void parseEmployeeObject(JSONObject order, int value) 
+
+	private static void parseOrderObject(JSONObject order, int value) 
     {
+		HashMap<String,String> orderMap = new HashMap<String,String>();
 			for(int i =1;i<=value;i++)
 			{
 				JSONObject orderObject = (JSONObject) order.get("order-"+String.format("%03d", i));
+				String key = "order-"+String.format("%03d", i);
 				String destination = (String) orderObject.get("destination");  
-				orderList.put("order-"+String.format("%03d", i),destination);
+				orderMap.put(key,destination);
 			}
     }
 
@@ -30,9 +32,10 @@ public class OrderScheduling {
         try (FileReader reader = 
         		new FileReader("C:\\Users\\Nimisha Goel\\workspace\\APP_SOEN6441\\FreightTransportation\\coding-assigment-orders.json"))
         {        	
-        	Object obj = jsonParser.parse(reader);            
-            int countDest= 96; // count 'destination' word in file
-    		parseEmployeeObject((JSONObject)obj, countDest);
+        	Object obj = jsonParser.parse(reader);
+        	System.out.println(obj);
+            int countDest= 96; // count 'destination' word in file by split method
+    		parseOrderObject((JSONObject)obj, countDest);
         } 
         catch (FileNotFoundException e) {
             e.printStackTrace();
