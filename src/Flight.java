@@ -1,20 +1,21 @@
 
 public class Flight {
 	
-	private final City DEPARTURE_CITY = City.YUL;
-	private City arrivalCity;
+	private final String DEPARTURE_CITY = "YUL";
+	private String arrivalCity;
 	private String day;
 	private String flightNumber;
-	private static final int numberOfOrders = 20;
+	private  int numberOfOrders;
 	
-	enum City {YUL,YYZ,YYC,YVR} ;
+	//enum City {YUL,YYZ,YYC,YVR} ;
 	
-	public Flight( City arrivalCity, String day, String flightNumber ) 
+	public Flight( String arrivalCity, String day, String flightNumber ) 
 	{
 		super();
 		this.arrivalCity = arrivalCity;
 		this.day = day;
 		this.flightNumber = flightNumber;
+		this.numberOfOrders =20;
 	}
  	
 	public String getDay() 
@@ -22,17 +23,25 @@ public class Flight {
 		return day;
 	}
 	
+	public int getNumberOfOrders() {
+		return numberOfOrders;
+	}
+
+	public void setNumberOfOrders(int numberOfOrders) {
+		this.numberOfOrders --;
+	}
+
 	public void setDay( String day ) 
 	{
 		this.day = day;
 	}
 	
-	public City getArrivalCity() 
+	public String getArrivalCity() 
 	{
 		return arrivalCity;
 	}
 	
-	public void setArrivalCity ( City arrivalCity )
+	public void setArrivalCity ( String arrivalCity )
 	{
 		this.arrivalCity = arrivalCity;
 	}
@@ -49,6 +58,6 @@ public class Flight {
 	
 	public void printFlightSchedule()
 	{
-		System.out.println("Flight: " + getFlightNumber() + ", departure: " + DEPARTURE_CITY + ", arrival: " + getArrivalCity() + ", day: " + getDay());
+		System.out.println("Flight: " + getFlightNumber() + ", departure: " + DEPARTURE_CITY + ", arrival: " + getArrivalCity() + ", day: " + getDay() + " , order: " + numberOfOrders );
 	}
 }

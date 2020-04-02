@@ -1,4 +1,7 @@
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,31 +14,34 @@ import org.json.simple.parser.ParseException;
 
 public class OrderScheduling {
 
-	private static void parseOrderObject(JSONObject order, int value) 
-    {
-		HashMap<String,String> orderMap = new HashMap<String,String>();
-			for(int i =1;i<=value;i++)
-			{
-				JSONObject orderObject = (JSONObject) order.get("order-"+String.format("%03d", i));
-				String key = "order-"+String.format("%03d", i);
-				String destination = (String) orderObject.get("destination");  
-				orderMap.put(key,destination);
-			}
-    }
-
 	@SuppressWarnings("unchecked")
-	public void readingJSON ()
+	public Set<Entry<String,String>> readingJSON ()
 	{
 		
 		JSONParser jsonParser = new JSONParser();
+		HashMap<String,String> orderMapping = new HashMap();
         
-        try (FileReader reader = 
-        		new FileReader("C:\\Users\\Nimisha Goel\\workspace\\APP_SOEN6441\\FreightTransportation\\coding-assigment-orders.json"))
+        try 
         {        	
-        	Object obj = jsonParser.parse(reader);
-        	System.out.println(obj);
-            int countDest= 96; // count 'destination' word in file by split method
-    		parseOrderObject((JSONObject)obj, countDest);
+        	Object orders = jsonParser.parse(new FileReader("C:\\Users\\Nimisha Goel\\workspace\\APP_SOEN6441\\FreightTransportation\\coding-assigment-orders.json"));
+        	JSONObject orderObject = (JSONObject) orders;
+        	System.out.println(orderObject);
+        	for(Object order: orderObject.keySet())
+        	{
+        		JSONObject destination = (JSONObject)orderObject.get(order);
+        		String key =order.toString();
+        		
+        		String value =destination.get("destination").toString();
+        		
+        		orderMapping.put(key, value);
+        	}
+        	TreeMap<String,String> sortOrders = new TreeMap<>(orderMapping);
+        	Set<Entry<String,String>> entries = sortOrders.entrySet();
+        	for(Entry<String,String> sort : entries)
+        	{
+        		System.out.println(sort.getKey() + "    " + sort.getValue());
+        	}
+        	 return entries;
         } 
         catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -46,5 +52,6 @@ public class OrderScheduling {
         catch (ParseException e) {
             e.printStackTrace();
         }
+        return null;
 	}
 }
